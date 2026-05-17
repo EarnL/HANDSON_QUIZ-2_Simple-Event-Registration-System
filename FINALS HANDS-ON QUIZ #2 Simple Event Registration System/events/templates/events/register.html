@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration</title>
+    <style>
+        :root {
+            --forest-950: #082016;
+            --forest-900: #0d2f20;
+            --forest-800: #164a2f;
+            --forest-700: #1f6541;
+            --forest-600: #2f7d4f;
+            --sage-100: #e8f1eb;
+            --sage-50: #f6faf7;
+            --moss: #9bb86f;
+            --gold: #d6a536;
+            --line: #c8d9cf;
+            --text: #143322;
+            --muted: #5f7568;
+            --error: #b42318;
+            --error-bg: #fff1f0;
+            --success: #1f6f43;
+            --success-bg: #e7f6ec;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            display: grid;
+            place-items: center;
+            padding: 32px 16px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background:
+                linear-gradient(130deg, rgba(8, 32, 22, 0.9), rgba(22, 74, 47, 0.68)),
+                radial-gradient(circle at 16% 18%, rgba(214, 165, 54, 0.22), transparent 28%),
+                radial-gradient(circle at 86% 20%, rgba(155, 184, 111, 0.28), transparent 30%),
+                linear-gradient(135deg, var(--sage-50), var(--sage-100));
+            color: var(--text);
+        }
+
+        main {
+            width: min(100%, 560px);
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            box-shadow: 0 28px 80px rgba(5, 24, 15, 0.34);
+            backdrop-filter: blur(18px);
+        }
+
+        .panel {
+            padding: 36px;
+        }
+
+        .form-panel {
+            background:
+                linear-gradient(180deg, #fff 0%, var(--sage-50) 100%);
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            color: var(--forest-950);
+            font-size: 2.1rem;
+            letter-spacing: 0;
+        }
+
+        .subtitle {
+            margin: 0 0 28px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--forest-900);
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+
+        input {
+            width: 100%;
+            min-height: 48px;
+            padding: 12px 14px;
+            border: 1px solid #bfd3c6;
+            border-radius: 8px;
+            background: #fff;
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+        }
+
+        input:focus {
+            border-color: var(--forest-600);
+            background: #fbfffc;
+            box-shadow: 0 0 0 4px rgba(47, 125, 79, 0.16);
+        }
+
+        .helptext {
+            display: block;
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 0.86rem;
+        }
+
+        button {
+            width: 100%;
+            min-height: 50px;
+            margin-top: 8px;
+            padding: 13px 18px;
+            border: 0;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--forest-800), var(--forest-600));
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 12px 24px rgba(22, 74, 47, 0.24);
+            transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            filter: saturate(1.08);
+            box-shadow: 0 16px 30px rgba(22, 74, 47, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .errorlist {
+            margin: 8px 0 0;
+            padding: 10px 12px 10px 30px;
+            color: var(--error);
+            background: var(--error-bg);
+            border: 1px solid #ffd0cc;
+            border-radius: 8px;
+            line-height: 1.4;
+        }
+
+        .success {
+            padding: 12px 14px;
+            margin: 0 0 18px;
+            background: var(--success-bg);
+            border: 1px solid #a8dfb7;
+            color: var(--success);
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 760px) {
+            body {
+                place-items: start center;
+            }
+
+            .panel {
+                padding: 26px 20px;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="panel form-panel" aria-label="Registration form">
+            <h1>Event Registration</h1>
+            <p class="subtitle">Enter your details below to submit your registration.</p>
+
+            {% if success_message %}
+                <p class="success">{{ success_message }}</p>
+            {% endif %}
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="field">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.help_text %}
+                            <span class="helptext">{{ field.help_text }}</span>
+                        {% endif %}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+
+                {% if form.non_field_errors %}
+                    {{ form.non_field_errors }}
+                {% endif %}
+
+                <button type="submit">Submit Registration</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

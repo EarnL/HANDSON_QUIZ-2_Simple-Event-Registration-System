@@ -26,6 +26,14 @@ The form validates the following requirements:
 | Age | Must be 18 and above |
 | Password | Must be at least 8 characters |
 
+---
+# 🌐 Live Deployment
+
+The system is deployed using PythonAnywhere.
+
+🔗 **Live Website:**  
+<a href="https://earnl.pythonanywhere.com/">https://earnl.pythonanywhere.com/</a>
+
 
 
 ---
@@ -37,16 +45,11 @@ Check out the other hands-on projects in this series:
 | # | Project Title | Repository Link |
 |---|---|---|
 | 1 | 📝 Simple Event Registration System | 📍 Current Repository |
-| 2 | 📝 Simple Event Registration System | 📍 Current Repository |
+| 2 | 📝 Task Management System | 📍 wait lang |
 
 
 ---
 
-# 🔗 Repository
-
-<a href="https://github.com/EarnL/HANDSON_QUIZ-2_Simple-Event-Registration-System.git">View GitHub Repository</a>
-
----
 
 <p align="center">
 Developed by <a href="https://github.com/EarnL">EarnL</a>
